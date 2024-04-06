@@ -61,7 +61,7 @@ x=permute((cached_condition_for_this).*(permute(repmat((repmat(y,1,N4)+permute(r
 
 q=permute((cached_condition_for_this).*(permute(repmat(-h,1,N4),[0,2,1,3])+permute(permute((permute(repmat((repmat(y,1,N4)+permute(repmat(z,1,N1,N3),[1,2,0])),1,N2),[3,0,1,2]).*permute(repmat(h,1,N4),[0,2,1,3])),[3,1,0,2]).^2,[2,1,3,0]))+permute((1-permute((cached_condition_for_this),[3,1,0,2])),[2,1,3,0]).*permute(q,[2,3,1,0]),[3,2,0,1]);
 
-%-----Please clear this file each time before you write on a new loop------
+%-----Please clear this file each time before you write a new loop on------
 ```
 Now copy the results to your matlab to replace the loops, and try them out. **It might work or not work, it is still a experimental project. For now it only support one if-block or one non if-block in the loop**. For example, the loop like the following won't work:
 ```malab
