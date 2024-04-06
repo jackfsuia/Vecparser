@@ -74,6 +74,7 @@ for n1=1:N1
     for n2=1:N2
         for n3=1:N3
             for n4=1:N4
+
                 %if block start
                 if n1~=n2*n3 && n3>n4^3
                     x(n1,n2,n3,n4)= (y(n1,n3)+z(n4))*h(n2,n3,n1);
