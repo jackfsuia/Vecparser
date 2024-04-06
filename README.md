@@ -120,4 +120,4 @@ If this work is helpful, please kindly cite as:
 ```
 ## Acknowledgement
 
-This repo uses the matlablexer from [pymatlabparser](https://github.com/jol-jol/pymatlabparser). This repo's pymatlabparser folder is entirely copied from there with nearly zero modifiacations. Thanks for their wonderful works.
+This repo uses the matlablexer from [pymatlabparser](https://github.com/jol-jol/pymatlabparser). This repo's [pymatlabparser](pymatlabparser) folder is entirely copied from there with nearly zero modifiacations. Thanks for their wonderful works.
