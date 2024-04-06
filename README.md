@@ -10,7 +10,7 @@ Then install the requirements, run
 ```bash
 pip install sly
 ```
-To vectorize your for-loops from Matlab and CVX, write your loop to the [loop_eiditor.m](loop_eiditor.m), then run
+To vectorize your for-loops from Matlab and CVX, write your loop (please first read the ([Notice](#Notice))) to the [loop_eiditor.m](loop_eiditor.m), then run
 ```bash
 python vecparser.py
 ```
@@ -63,7 +63,10 @@ q=permute((cached_condition_for_this).*(permute(repmat(-h,1,N4),[0,2,1,3])+permu
 
 %-----Please clear this file each time before you write a new loop on------
 ```
-Now copy the results to your matlab to replace the loops, and try them out. **It might work or not work, it is still a experimental project. For now it only support one if-block or one non if-block in the loop**. For example, the loop like the following won't work:
+Now copy the results to your matlab to replace the loops, and try them out. 
+
+## Notice
+**It might work or not work, it is still a experimental project. For now it only support one if-block or one non if-block in the loop**. For example, the loop like the following won't work:
 ```malab
 for n1=1:N1
     for n2=1:N2
@@ -92,7 +95,6 @@ for n1=1:N1
     end
 end
 ```
-
 ## Future Work
 - Support multiple blocks of if-else in one loop. This may be soon.
 - Support reduce operators like `sum`, `norm`, `*`(matrix multiplication).
