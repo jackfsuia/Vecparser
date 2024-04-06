@@ -66,7 +66,7 @@ q=permute((cached_condition_for_this).*(permute(repmat(-h,1,N4),[0,2,1,3])+permu
 Now copy the results to your matlab to replace the loops, and try them out. 
 
 ## Notice
-**It might work or not work, it is still a experimental project. For now it only support one if-block or one non if-block in the loop**. For example, the loop like the following won't work:
+**It might work or not work, it is still a experimental project. For now it only support one if-block or one non if-block in the loop**. For example, the loop like the following, which has one if-block and one non if-block won't work:
 ```matlab
 for n1=1:N1
     for n2=1:N2
@@ -81,7 +81,7 @@ for n1=1:N1
     end
 end
 ```
-but, this loop can work:
+but, this loop below that has one non if-block can work:
 
 ```matlab
 for n1=1:N1
