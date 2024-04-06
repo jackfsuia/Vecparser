@@ -67,7 +67,7 @@ Now copy the results to your matlab to replace the loops, and try them out.
 
 ## Notice
 **It might work or not work, it is still a experimental project. For now it only support one if-block or one non if-block in the loop**. For example, the loop like the following won't work:
-```malab
+```matlab
 for n1=1:N1
     for n2=1:N2
         for n3=1:N3
@@ -83,7 +83,7 @@ end
 ```
 but, this loop can work:
 
-```malab
+```matlab
 for n1=1:N1
     for n2=1:N2
         for n3=1:N3
