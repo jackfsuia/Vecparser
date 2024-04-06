@@ -10,7 +10,7 @@ Then install the requirements, run
 ```bash
 pip install sly
 ```
-To vectorize your for-loops from Matlab and CVX, write your loop (please first read the ([Notice](#Notice))) to the [loop_eiditor.m](loop_eiditor.m), then run
+To vectorize your for-loops from Matlab and CVX, write your loop (please first read the [Notice](#Notice)) to the [loop_eiditor.m](loop_eiditor.m), then run
 ```bash
 python vecparser.py
 ```
