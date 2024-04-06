@@ -17,6 +17,53 @@ python vecparser.py
 That's all! The results will be printed in [loop_eiditor.m](loop_eiditor.m) too, please refresh it.
 
 ## Example
+To vectorize the Matlab loops, copy the loops you want to vectorize to [loop_eiditor.m](loop_eiditor.m), like this one:
+```matlab
+% loop_eiditor.m
+for n1=1:N1
+    for n2=1:N2
+        for n3=1:N3
+            for n4=1:N4
+                if n1~=n2*n3 && n3>n4^3
+                    x(n1,n2,n3,n4)= (y(n1,n3)+z(n4))*h(n2,n3,n1);
+                    q(n4,n3,n2,n1)= -h(n2,n3,n1)+((y(n1,n3)+z(n4))*h(n2,n3,n1))^2;
+                end
+            end
+        end
+    end
+end
+```
+then run 
+```bash
+python vecparser.py
+```
+The result will be appended to [loop_eiditor.m](loop_eiditor.m) as
+```matlab
+% loop_eiditor.m
+for n1=1:N1
+    for n2=1:N2
+        for n3=1:N3
+            for n4=1:N4
+                if n1~=n2*n3 && n3>n4^3
+                    x(n1,n2,n3,n4)= (y(n1,n3)+z(n4))*h(n2,n3,n1);
+                    q(n4,n3,n2,n1)= -h(n2,n3,n1)+((y(n1,n3)+z(n4))*h(n2,n3,n1))^2;
+                end
+            end
+        end
+    end
+end
+
+%-------------------------vectorized by Vecparser as-----------------------
+
+cached_condition_for_this=(permute(repmat(repmat((1:N1)',1,N2,N3)~=permute(repmat(repmat((1:N2)',1,N3).*permute(repmat((1:N3)',1,N2),[1,0]),1,N1),[2,0,1]),1,N4),[1,0,2,3])&&permute(repmat(repmat((1:N3)',1,N4)>permute(repmat((1:N4)'.^3,1,N3),[1,0]),1,N2,N1),[2,3,0,1]));
+
+x=permute((cached_condition_for_this).*(permute(repmat((repmat(y,1,N4)+permute(repmat(z,1,N1,N3),[1,2,0])),1,N2),[3,0,1,2]).*permute(repmat(h,1,N4),[0,2,1,3]))+permute((1-permute((cached_condition_for_this),[3,1,0,2])),[2,1,3,0]).*permute(x,[1,0,2,3]),[1,0,2,3]);
+
+q=permute((cached_condition_for_this).*(permute(repmat(-h,1,N4),[0,2,1,3])+permute(permute((permute(repmat((repmat(y,1,N4)+permute(repmat(z,1,N1,N3),[1,2,0])),1,N2),[3,0,1,2]).*permute(repmat(h,1,N4),[0,2,1,3])),[3,1,0,2]).^2,[2,1,3,0]))+permute((1-permute((cached_condition_for_this),[3,1,0,2])),[2,1,3,0]).*permute(q,[2,3,1,0]),[3,2,0,1]);
+
+%-----Please clear this file each time before you write on a new loop------
+```
+Now copy the results to your matlab to replace the loops, and try them out. It might work or not work, it is still a experimental project.
 
 ## Future Work
 - Support multiple blocks of if-else in one loop. This may be soon.
