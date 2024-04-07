@@ -73,7 +73,7 @@ q=permute(permute((cached_condition_for_this),[4,1,2,3]).*permute((repmat(-h,1,1
 
 %-----Please clear this file each time before you write a new loop on------
 ```
-Now copy the results to your matlab to replace the loops, and try them out.
+现在将结果复制到你的 matlab 中去替换原始的循环，试着运行一下。
 
  *觉得有用的话，请帮我们点颗星 :star: ，谢谢~~*
  
