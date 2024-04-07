@@ -4,7 +4,9 @@
 <!-- # Vecparser -->
 
 <div align="center">
-  
+    
+[![GitHub Code License](https://img.shields.io/github/license/jackfsuia/Vecparser)](LICENSE)
+
 [English](README.md) | 简体中文
 
 </div>
