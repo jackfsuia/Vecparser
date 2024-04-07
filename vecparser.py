@@ -188,7 +188,7 @@ def expression_parser(variable)->Variable:
         return end_index
     
 
-    def symbol_list(token_list:list[Token]):
+    def double_lexer(token_list:list[Token]):
         #the returned list only saves two types of things: operators , variables
         end_index= expression_parens(token_list)
         lis=[]
@@ -310,7 +310,7 @@ def expression_parser(variable)->Variable:
 
         return result_symbols[0]
     
-    symbols = symbol_list(variable.token_list)
+    symbols = double_lexer(variable.token_list)
 
     result_variable = parse_symbols(symbols)
 
