@@ -75,7 +75,7 @@ q=permute(permute((cached_condition_for_this),[4,1,2,3]).*permute((repmat(-h,1,1
 ```
 Now copy the results to your matlab to replace the loops, and try them out.
 
- *Does this help you save some run time? Give us a :star:*
+ *觉得有用给我们点颗星:star: ~，感谢~*
  
 ## 注意事项
 **这是个实验性的项目，现阶段有很多bug. 现在仅支持单个 if 块或者单个非if块**. 例如，下面的例子有一个if 块加上一个非if 块，是不支持的:
