@@ -165,16 +165,17 @@ def extract_loop_bounds(input_string):
     else:
         raise Exception("no loop bound")
 
-def extract_expressions(input_string):
+def extract_expressions(input_block):
+    result=[]
+    for line in input_block[1:]:
+        matchs = re.findall(r'.+=.+;', line.replace(" ",""), re.MULTILINE)
+        result.append(matchs[0][:-1])
+    return result
 
-    matchs = re.findall(r'.+=.+;', input_string.replace(" ",""), re.MULTILINE)
-    return [expression[:-1] for expression in matchs]
-
-def extract_condition(input_string):
-
-    matchs = re.findall(r'if .+', input_string, re.MULTILINE)
-    if matchs:
-        return [expression for expression in matchs]
+def extract_condition(block):
+    match = re.search(r'[^\w]*if ',block[0])
+    if match:
+        return block[0][match.end():]
     return None
 
 def expression_parser(variable)->Variable:
@@ -351,6 +352,7 @@ def add_condition(expression, condition):
     return conditinal_expression
 
 input_string=""
+
 with open('loop_editor.m', 'r') as file:
     content = file.read()
     
@@ -367,34 +369,70 @@ with open('loop_editor.m', 'r') as file:
 print("-----------------------------vectorized by Vecparser as----------------------------------------\n")
 new_content="\n\n%-------------------------vectorized by Vecparser as-----------------------\n\n"
 
+
 loop_bounds = extract_loop_bounds(input_string)
 
-cached_condition_name=None
 
-condition=extract_condition(input_string)
-if condition:
-    cached_condition_name='cached_condition_for_this'
-    condition = condition[0][2:]
-    tokens = MatlabLexer().tokenize(condition)
-    condition_v = Variable([to for to in tokens]).start_parsing()
-    print(f'{cached_condition_name}=({condition_v.name});')
-    new_content+=f'{cached_condition_name}=({condition_v.name});\n\n'
-    cached_condition_index = condition_v.index
+line_list=input_string.splitlines()
 
+def vectorize_one_block(input_block):
+    global cached_condition_name
+    global cached_condition_index
+    global new_content
+    cached_condition_name=None
 
-expressions = extract_expressions(input_string)
-
-for expression in expressions:
-    conditional_expression=None
+    condition=extract_condition(input_block)
     if condition:
-        conditional_expression = add_condition(expression, cached_condition_name)
-    else:
-        conditional_expression = expression
-    tokens = MatlabLexer().tokenize(conditional_expression)
-    parser_result= Variable([to for to in tokens]).start_parsing()
-    print(parser_result, end="")
-    print(';')
-    new_content+=f'{parser_result.name};\n\n'
+        cached_condition_name='cached_condition_for_this'
+        tokens = MatlabLexer().tokenize(condition)
+        condition_v = Variable([to for to in tokens]).start_parsing()
+        print(f'{cached_condition_name}=({condition_v.name});')
+        new_content+=f'{cached_condition_name}=({condition_v.name});\n\n'
+        cached_condition_index = condition_v.index
+
+
+    expressions = extract_expressions(input_block)
+
+    for expression in expressions:
+        conditional_expression=None
+        if condition:
+            conditional_expression = add_condition(expression, cached_condition_name)
+        else:
+            conditional_expression = expression
+        tokens = MatlabLexer().tokenize(conditional_expression)
+        parser_result= Variable([to for to in tokens]).start_parsing()
+        print(parser_result, end="")
+        print(';')
+        new_content+=f'{parser_result.name};\n\n'
+
+def clear_line_stack(line_stack):
+    while line_stack:
+        if len(line_stack) == 1:
+            return line_stack.pop()
+        line_stack.pop()
+    return None
+
+line_stack=[]
+cached_condition_name=None
+cached_condition_index=None
+
+for i,line in enumerate(line_list):
+    if ';' in line:
+        line_stack.append(i)
+    elif re.search(r'[^\w]*if ',line):
+        if line_stack:
+            bottom= clear_line_stack(line_stack)
+            if bottom:
+                vectorize_one_block(line_list[bottom:i])
+        line_stack.append(i)
+    elif re.search(r'[^\w]*end[^\w]*',line):
+        if line_stack:
+            bottom = clear_line_stack(line_stack)
+            if bottom:
+                vectorize_one_block(line_list[bottom:i])
+
+
+
 print("\n---------Those results have been writen to the file \"loop_editor.m\", please refresh it.---------")
 new_content+="%-----Please clear this file each time before you write a new loop on------"
 with open('loop_editor.m', "a") as target_file:
