@@ -1,4 +1,6 @@
-![# Vecparser](images/logo.PNG)
+<p align="center">
+    <img src="images/logo.PNG" width="50%" >
+</p>
 <!-- # Vecparser -->
 A parser that auto vectorizes your nested for-loops (in MATLAB, CVX) as much as possible. This will save a lot of run time. This technique is based on my original post at https://ask.cvxr.com/t/how-to-vectorize-most-constraint-loops-in-cvx/9804 .
 
