@@ -173,7 +173,9 @@ def extract_expressions(input_string):
 def extract_condition(input_string):
 
     matchs = re.findall(r'if .+', input_string, re.MULTILINE)
-    return [expression for expression in matchs]
+    if matchs:
+        return [expression for expression in matchs]
+    return None
 
 def expression_parser(variable)->Variable:
     
@@ -249,7 +251,7 @@ def expression_parser(variable)->Variable:
             op = symbols.pop()#operator
             if op.value in LEFT_OPERATORS and op.value not in MIDDLE_OPERATORS:#become unary op
                 symbols.append(apply_operator(op, right_value))
-            elif op.value in LEFT_OPERATORS and op.value in MIDDLE_OPERATORS and (symbols == [] or (type(symbols[-1]).__name__ == 'Token' and symbols[-1].value == "(")):#become unary op
+            elif op.value in LEFT_OPERATORS and op.value in MIDDLE_OPERATORS and (symbols == [] or (type(symbols[-1]).__name__ == 'Token' and symbols[-1].value == "(") or (type(symbols[-1]).__name__ == 'Token' and symbols[-1].value in MIDDLE_OPERATORS)):#become unary op
                 symbols.append(apply_operator(op, right_value))
             elif op.type=='NAME':# function/unary op
                 symbols.append(apply_operator(op, right_value))
@@ -278,7 +280,7 @@ def expression_parser(variable)->Variable:
 
         for symbol in symbols:
             if type(symbol).__name__ == 'Token'  and symbol.value not in "()":  # 如果是操作符
-                while len(result_symbols)>=2 and not is_symbol_operator(result_symbols[-1], '(') and priority(result_symbols[-2]) >= priority(symbol):
+                while len(result_symbols)>=2 and not is_symbol_operator(result_symbols[-1], '(') and type(result_symbols[-2]).__name__ == 'Token' and priority(result_symbols[-2]) >= priority(symbol):
 
                     use_one_operator_from_stack(result_symbols)
 
@@ -366,21 +368,28 @@ print("-----------------------------vectorized by Vecparser as------------------
 new_content="\n\n%-------------------------vectorized by Vecparser as-----------------------\n\n"
 
 loop_bounds = extract_loop_bounds(input_string)
-cached_condition_name='cached_condition_for_this'
-condition = extract_condition(input_string)[0][2:]
-tokens = MatlabLexer().tokenize(condition)
-condition_v = Variable([to for to in tokens]).start_parsing()
-print(f'{cached_condition_name}=({condition_v.name});')
-new_content+=f'{cached_condition_name}=({condition_v.name});\n\n'
-cached_condition_index = condition_v.index
+
+cached_condition_name=None
+
+condition=extract_condition(input_string)
+if condition:
+    cached_condition_name='cached_condition_for_this'
+    condition = condition[0][2:]
+    tokens = MatlabLexer().tokenize(condition)
+    condition_v = Variable([to for to in tokens]).start_parsing()
+    print(f'{cached_condition_name}=({condition_v.name});')
+    new_content+=f'{cached_condition_name}=({condition_v.name});\n\n'
+    cached_condition_index = condition_v.index
 
 
 expressions = extract_expressions(input_string)
 
 for expression in expressions:
-
-    conditional_expression = add_condition(expression, cached_condition_name)
-
+    conditional_expression=None
+    if condition:
+        conditional_expression = add_condition(expression, cached_condition_name)
+    else:
+        conditional_expression = expression
     tokens = MatlabLexer().tokenize(conditional_expression)
     parser_result= Variable([to for to in tokens]).start_parsing()
     print(parser_result, end="")
