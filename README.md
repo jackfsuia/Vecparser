@@ -3,7 +3,7 @@
 </p>
 <div align="center">
     
-[English]((README.md)) | 简体中文
+English | [简体中文]((README.md))
 </div>
 <!-- # Vecparser -->
 A parser that auto vectorizes your nested for-loops (in MATLAB, CVX) as much as possible, which is to save tons of run time. This technique is based on my original post at https://ask.cvxr.com/t/how-to-vectorize-most-constraint-loops-in-cvx/9804 .
