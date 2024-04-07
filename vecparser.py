@@ -70,6 +70,7 @@ def expand(x:Variable, target_order:list[str]=None,)->Variable:
         return x
     if len(x.index) == len(target_order):
         return x
+    len_of_original=len(x.index)
     idx_max = []
     for target_idx in target_order:
         if target_idx not in x.index:
@@ -77,7 +78,7 @@ def expand(x:Variable, target_order:list[str]=None,)->Variable:
             x.index.append(target_idx)
 
     fake_x='x'
-    result = f"repmat({fake_x},1"
+    result = f"repmat({fake_x}"+',1'*len_of_original
     for im in idx_max:
         result += f",{im}"
     result += ")"
