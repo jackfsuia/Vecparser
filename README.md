@@ -78,15 +78,15 @@ for n1=1:N1
         for n3=1:N3
             for n4=1:N4
 
-                %if block start
+                % if block start
                 if n1~=n2*n3 && n3>n4^3
                     x(n1,n2,n3,n4)= (y(n1,n3)+z(n4))*h(n2,n3,n1);
                 end
-                %if block end
+                % if block end
 
-                %non if block start
+                % non if block start
                 q(n4,n3,n2,n1)= -h(n2,n3,n1)+((y(n1,n3)+z(n4))*h(n2,n3,n1))^2;
-                 %non if block end
+                 % non if block end
             end
         end
     end
@@ -99,10 +99,10 @@ for n1=1:N1
     for n2=1:N2
         for n3=1:N3
             for n4=1:N4
-                %non if block start
+                % non if block start
                 x(n1,n2,n3,n4)= (y(n1,n3)+z(n4))*h(n2,n3,n1);
                 q(n4,n3,n2,n1)= -h(n2,n3,n1)+((y(n1,n3)+z(n4))*h(n2,n3,n1))^2;
-                %non if block end
+                % non if block end
             end
         end
     end
