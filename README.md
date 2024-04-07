@@ -58,11 +58,11 @@ end
 
 %-------------------------vectorized by Vecparser as-----------------------
 
-cached_condition_for_this=(permute(repmat(repmat((1:N1)',1,N2,N3)~=permute(repmat(repmat((1:N2)',1,N3).*permute(repmat((1:N3)',1,N2),[1,0]),1,N1),[2,0,1]),1,N4),[1,0,2,3])&&permute(repmat(repmat((1:N3)',1,N4)>permute(repmat((1:N4)'.^3,1,N3),[1,0]),1,N2,N1),[2,3,0,1]));
+cached_condition_for_this=(permute(repmat(repmat((1:N1)',1,N2,N3)~=permute(repmat(repmat((1:N2)',1,N3).*permute(repmat((1:N3)',1,N2),[2,1]),1,N1),[3,1,2]),1,N4),[2,1,3,4])&&permute(repmat(repmat((1:N3)',1,N4)>permute(repmat((1:N4)'.^3,1,N3),[2,1]),1,N2,N1),[3,4,1,2]));
 
-x=permute((cached_condition_for_this).*(permute(repmat((repmat(y,1,N4)+permute(repmat(z,1,N1,N3),[1,2,0])),1,N2),[3,0,1,2]).*permute(repmat(h,1,N4),[0,2,1,3]))+permute((1-permute((cached_condition_for_this),[3,1,0,2])),[2,1,3,0]).*permute(x,[1,0,2,3]),[1,0,2,3]);
+x=permute((cached_condition_for_this).*(permute(repmat((repmat(y,1,N4)+permute(repmat(z,1,N1,N3),[2,3,1])),1,N2),[4,1,2,3]).*permute(repmat(h,1,N4),[1,3,2,4]))+permute((1-permute((cached_condition_for_this),[4,2,1,3])),[3,2,4,1]).*permute(x,[2,1,3,4]),[2,1,3,4]);
 
-q=permute((cached_condition_for_this).*(permute(repmat(-h,1,N4),[0,2,1,3])+permute(permute((permute(repmat((repmat(y,1,N4)+permute(repmat(z,1,N1,N3),[1,2,0])),1,N2),[3,0,1,2]).*permute(repmat(h,1,N4),[0,2,1,3])),[3,1,0,2]).^2,[2,1,3,0]))+permute((1-permute((cached_condition_for_this),[3,1,0,2])),[2,1,3,0]).*permute(q,[2,3,1,0]),[3,2,0,1]);
+q=permute((cached_condition_for_this).*(permute(repmat(-h,1,N4),[1,3,2,4])+permute(permute((permute(repmat((repmat(y,1,N4)+permute(repmat(z,1,N1,N3),[2,3,1])),1,N2),[4,1,2,3]).*permute(repmat(h,1,N4),[1,3,2,4])),[4,2,1,3]).^2,[3,2,4,1]))+permute((1-permute((cached_condition_for_this),[4,2,1,3])),[3,2,4,1]).*permute(q,[3,4,2,1]),[4,3,1,2]);
 
 %-----Please clear this file each time before you write a new loop on------
 ```
