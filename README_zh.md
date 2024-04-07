@@ -35,7 +35,7 @@ for n1=1:N1
         for n3=1:N3
             for n4=1:N4
                 if n1~=n2*n3 && n3>n4^3
-                    x(n1,n2,n3,n4)= (y(n1,n3)+z(n4))*h(n2,n3,n1); % note: size(z) has to be "N4 1", not "1 N4".
+                    x(n1,n2,n3,n4)= (y(n1,n3)+z(n4))*h(n2,n3,n1); % 注意: size(z) 必须是 "N4 1", 而不是 "1 N4".
                     q(n4,n3,n2,n1)= -h(n2,n3,n1)+((y(n1,n3)+z(n4))*h(n2,n3,n1))^2;
                 end
             end
@@ -55,7 +55,7 @@ for n1=1:N1
         for n3=1:N3
             for n4=1:N4
                 if n1~=n2*n3 && n3>n4^3
-                    x(n1,n2,n3,n4)= (y(n1,n3)+z(n4))*h(n2,n3,n1); % note: size(z) has to be "N4 1", not "1 N4".
+                    x(n1,n2,n3,n4)= (y(n1,n3)+z(n4))*h(n2,n3,n1); % 注意: size(z) 必须是 "N4 1", 而不是 "1 N4".
                     q(n4,n3,n2,n1)= -h(n2,n3,n1)+((y(n1,n3)+z(n4))*h(n2,n3,n1))^2;
                 end
             end
@@ -92,7 +92,7 @@ for n1=1:N1
                 % if块结束
 
                 % 非if块起始
-                q(n4,n3,n2,n1)= -h(n2,n3,n1)+((y(n1,n3)+z(n4))*h(n2,n3,n1))^2; % 注意: size(z) has to be "N4 1", not "1 N4".
+                q(n4,n3,n2,n1)= -h(n2,n3,n1)+((y(n1,n3)+z(n4))*h(n2,n3,n1))^2; % 注意: size(z) 必须是 "N4 1", 而不是 "1 N4".
                  % 非if块结束
             end
         end
@@ -108,25 +108,25 @@ for n1=1:N1
             for n4=1:N4
                 % 非if块起始
                 x(n1,n2,n3,n4)= (y(n1,n3)+z(n4))*h(n2,n3,n1);
-                q(n4,n3,n2,n1)= -h(n2,n3,n1)+((y(n1,n3)+z(n4))*h(n2,n3,n1))^2; % note: size(z) has to be "N4 1", not "1 N4".
+                q(n4,n3,n2,n1)= -h(n2,n3,n1)+((y(n1,n3)+z(n4))*h(n2,n3,n1))^2; % 注意: size(z) 必须是 "N4 1", 而不是 "1 N4".
                 % 非if块结束
             end
         end
     end
 end
 ```
-## Future Work
-- Support multiple blocks of if-else in one loop. This may be soon.
-- Support reduce operators like `sum`, `norm`, `*`(matrix multiplication).
-- Explore its use on other languages (e.g., python)
+## 未来工作
+- 支持多个if块和非if块。这个应该很快。
+- 支持降维式运算符，比如 `sum`, `norm`, `*`(矩阵乘).
+- 推广到其他语言 (e.g., python)
   
-## License
+## 许可证
 
-ShampooSalesAgent is licensed under the Apache 2.0 License found in the [LICENSE](LICENSE) file in the root directory of this repository.
+Vecparser 根据位于此仓库根目录中的 [LICENSE](LICENSE) 文件中的 Apache 2.0 许可证授权。
 
-## Citation
+## 引用
 
-If this work is helpful, please kindly cite as:
+如果这项工作对你有所帮助，请引用为：
 
 ```bibtex
 @article{Vecparser,
@@ -136,6 +136,6 @@ If this work is helpful, please kindly cite as:
   url={https://github.com/jackfsuia/Vecparser}
 }
 ```
-## Acknowledgement
+## 致谢
 
-This repo uses the matlablexer from [pymatlabparser](https://github.com/jol-jol/pymatlabparser). This repo's [pymatlabparser](pymatlabparser) folder is entirely copied from there with nearly zero modifiacations. Thanks for their wonderful works.
+这个仓库使用了[pymatlabparser](https://github.com/jol-jol/pymatlabparser) 中的 matlablexer。此仓库的[pymatlabparser](pymatlabparser)文件夹完全是从那里复制过来的，几乎没有修改。感谢他们出色的工作。
