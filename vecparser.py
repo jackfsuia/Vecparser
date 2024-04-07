@@ -95,7 +95,7 @@ def permute(x:Variable, target_order:list[str]=None)->Variable:
         raise Exception("permute failed: len(idx) != len(order)")
     if idx == target_order:
         return x
-    pos_dict = dict(zip(idx, list(range(len(idx)))))
+    pos_dict = dict(zip(idx, list(range(1,len(idx)+1))))
     pos = []
     for target_pos in target_order:
         pos.append(pos_dict[target_pos])
