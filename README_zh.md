@@ -35,7 +35,7 @@ for n1=1:N1
         for n3=1:N3
             for n4=1:N4
                 if n1~=n2*n3 && n3>n4^3
-                    x(n1,n2,n3,n4)= (y(n1,n3)+z(n4))*h(n2,n3,n1); % 注意: size(z) 必须是 "N4 1", 而不是 "1 N4".
+                    x(n1,n2,n3,n4)= (y(n1,n3)+z(n4))*h(n2,n3,n1); % 注意: size(z) 必须是 "N4 1", 而不是 "1 N4"。
                     q(n4,n3,n2,n1)= -h(n2,n3,n1)+((y(n1,n3)+z(n4))*h(n2,n3,n1))^2;
                 end
             end
@@ -55,7 +55,7 @@ for n1=1:N1
         for n3=1:N3
             for n4=1:N4
                 if n1~=n2*n3 && n3>n4^3
-                    x(n1,n2,n3,n4)= (y(n1,n3)+z(n4))*h(n2,n3,n1); % 注意: size(z) 必须是 "N4 1", 而不是 "1 N4".
+                    x(n1,n2,n3,n4)= (y(n1,n3)+z(n4))*h(n2,n3,n1); % 注意: size(z) 必须是 "N4 1", 而不是 "1 N4"。
                     q(n4,n3,n2,n1)= -h(n2,n3,n1)+((y(n1,n3)+z(n4))*h(n2,n3,n1))^2;
                 end
             end
@@ -75,10 +75,10 @@ q=permute(permute((cached_condition_for_this),[4,1,2,3]).*permute((repmat(-h,1,1
 ```
 Now copy the results to your matlab to replace the loops, and try them out.
 
- *觉得有用给我们点颗星:star: ~，感谢~*
+ *觉得有用的话，请帮我们点颗星 :star: ，谢谢~*
  
 ## 注意事项
-**这是个实验性的项目，现阶段有很多bug. 现在仅支持单个 if 块或者单个非if块**. 例如，下面的例子有一个if 块加上一个非if 块，是不支持的:
+**这是个实验性的项目，现阶段有很多bug。 现在仅支持单个 if 块或者单个非if块**。 例如，下面的例子有一个if 块加上一个非if 块，是不支持的:
 ```matlab
 for n1=1:N1
     for n2=1:N2
@@ -92,7 +92,7 @@ for n1=1:N1
                 % if块结束
 
                 % 非if块起始
-                q(n4,n3,n2,n1)= -h(n2,n3,n1)+((y(n1,n3)+z(n4))*h(n2,n3,n1))^2; % 注意: size(z) 必须是 "N4 1", 而不是 "1 N4".
+                q(n4,n3,n2,n1)= -h(n2,n3,n1)+((y(n1,n3)+z(n4))*h(n2,n3,n1))^2; % 注意: size(z) 必须是 "N4 1", 而不是 "1 N4"。
                  % 非if块结束
             end
         end
@@ -108,7 +108,7 @@ for n1=1:N1
             for n4=1:N4
                 % 非if块起始
                 x(n1,n2,n3,n4)= (y(n1,n3)+z(n4))*h(n2,n3,n1);
-                q(n4,n3,n2,n1)= -h(n2,n3,n1)+((y(n1,n3)+z(n4))*h(n2,n3,n1))^2; % 注意: size(z) 必须是 "N4 1", 而不是 "1 N4".
+                q(n4,n3,n2,n1)= -h(n2,n3,n1)+((y(n1,n3)+z(n4))*h(n2,n3,n1))^2; % 注意: size(z) 必须是 "N4 1", 而不是 "1 N4"。
                 % 非if块结束
             end
         end
@@ -117,8 +117,8 @@ end
 ```
 ## 未来工作
 - 支持多个if块和非if块。这个应该很快。
-- 支持降维式运算符，比如 `sum`, `norm`, `*`(矩阵乘).
-- 推广到其他语言 (e.g., python)
+- 支持降维式运算符，比如 `sum`, `norm`, `*`(矩阵乘)。
+- 推广到其他语言 (e.g., python)。
   
 ## 许可证
 
