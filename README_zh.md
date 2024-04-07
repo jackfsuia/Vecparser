@@ -10,7 +10,16 @@
 </div>
 
 Vecparser 是一个自动将任意层 for 循环（在 MATLAB、CVX 中）尽可能向量化的解析器，由此节省大量的程序运行时间。这项技术基于我2022年发在https://ask.cvxr.com/t/how-to-vectorize-most-constraint-loops-in-cvx/9804 的原创帖子。
+## Table of Contents
 
+- [快速启动](#快速启动)
+- [示例](#示例)
+- [性能表现](#性能表现)
+- [注意事项](#注意事项)
+- [未来工作](#未来工作)
+- [许可证](#许可证)
+- [引用](#引用)
+- [致谢](#致谢)
 ## 快速启动
 先克隆仓库
 ```bash
@@ -76,7 +85,7 @@ q=permute(permute((cached_condition_for_this),[4,1,2,3]).*permute((repmat(-h,1,1
 现在将结果复制到你的 matlab 中去替换原始的循环，试着运行一下。
 
  *觉得有用的话，请帮我们点颗星 :star: ，谢谢~~*
- ## Performance
+ ## 性能表现
 我在我的老电脑上跑了仿真，电脑配置是: Intel(R) Xeon(R) CPU E5-2660 v2 @ 2.20GHz, RAM 16G. 结果如下:
 ![performance](images/loop.png)
 
