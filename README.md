@@ -115,7 +115,7 @@ end
   
 ## License
 
-ShampooSalesAgent is licensed under the Apache 2.0 License found in the [LICENSE](LICENSE) file in the root directory of this repository.
+Vecparser is licensed under the Apache 2.0 License found in the [LICENSE](LICENSE) file in the root directory of this repository.
 
 ## Citation
 
