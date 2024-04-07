@@ -74,6 +74,12 @@ Now copy the results to your matlab to replace the loops, and try them out.
 
  *Does this help you save some run time? Give us a :star:*
  
+## Performance
+I ran this performance test on my old computer: Intel(R) Xeon(R) CPU E5-2660 v2 @ 2.20GHz, RAM 16G. Here is what I got:
+![performance](images/loop.png)
+
+I also obsered that when the loop of iterations is too big, vectorization of it will cause my computer to crash due to memory shortage, therefore it ran slower than traditional loops in those extreme cases.
+
 ## Notice
 **It might work or not work, it is still a experimental project. For now it only support one if-block or one non if-block in the loop**. For example, the loop like the following, which has one if-block and one non if-block won't work:
 ```matlab
