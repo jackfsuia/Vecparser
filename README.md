@@ -2,7 +2,7 @@
     <img src="images/logo.PNG" width="45%" >
 </p>
 <!-- # Vecparser -->
-A parser that auto vectorizes your nested for-loops (in MATLAB, CVX) as much as possible, which is to save a lot of run time. This technique is based on my original post at https://ask.cvxr.com/t/how-to-vectorize-most-constraint-loops-in-cvx/9804 .
+A parser that auto vectorizes your nested for-loops (in MATLAB, CVX) as much as possible, which is to save tons of run time. This technique is based on my original post at https://ask.cvxr.com/t/how-to-vectorize-most-constraint-loops-in-cvx/9804 .
 
 ## Quick Start
 Run
