@@ -86,7 +86,7 @@ q=permute(permute((cached_condition_for_this),[4,1,2,3]).*permute((repmat(-h,1,1
 
  *觉得有用的话，请帮我们点颗星 :star: ，谢谢~~*
  ## 性能表现
-我在我的老电脑上跑了仿真，电脑配置是: Intel(R) Xeon(R) CPU E5-2660 v2 @ 2.20GHz, RAM 16G. 结果如下:
+我在老电脑上跑了仿真，电脑配置是: Intel(R) Xeon(R) CPU E5-2660 v2 @ 2.20GHz, RAM 16G. 结果如下:
 ![performance](images/loop.png)
 
 另外，当迭代次数过大的时候，向量化for循环会因为内存不足而导致电脑死机吗，在这些情况下向量化跑的反而没有原始循环那么快。或许内存不足的时候得在向量化和for循环之间做权衡，或许当考虑用GPU来计算的时候整个情况又会更微妙。
