@@ -3,6 +3,8 @@
 </p>
 <div align="center">
     
+[![GitHub Code License](https://img.shields.io/github/license/jackfsuia/Vecparser)](LICENSE)
+
 English | [简体中文](README_zh.md)
 </div>
 <!-- # Vecparser -->
