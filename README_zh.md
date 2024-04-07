@@ -76,7 +76,11 @@ q=permute(permute((cached_condition_for_this),[4,1,2,3]).*permute((repmat(-h,1,1
 现在将结果复制到你的 matlab 中去替换原始的循环，试着运行一下。
 
  *觉得有用的话，请帮我们点颗星 :star: ，谢谢~~*
- 
+ ## Performance
+我在我的老电脑上跑了仿真，电脑配置是: Intel(R) Xeon(R) CPU E5-2660 v2 @ 2.20GHz, RAM 16G. 结果如下:
+![performance](images/loop.png)
+
+另外，当迭代次数过大的时候，向量化for循环会因为内存不足而导致电脑死机吗，在这些情况下向量化跑的反而没有原始循环那么快。
 ## 注意事项
 **这是个实验性的项目，现阶段有很多bug。 现在仅支持单个 if 块或者单个非if块**。 例如，下面的例子有一个if 块加上一个非if 块，是不支持的:
 ```matlab
