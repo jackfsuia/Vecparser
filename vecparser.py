@@ -348,9 +348,17 @@ class string_cached_stack:
         self.stack.pop()
         if self.stack:
             self.cached_condition=self.cached_condition[:self.stack[-1]]
+            global cached_condition_name
+            global cached_condition_index
+            global new_content
+            tokens = MatlabLexer().tokenize(self.cached_condition)
+            condition_v = Variable([to for to in tokens]).start_parsing()
+            print(f'{cached_condition_name}=({condition_v.name});')
+            new_content+=f'{cached_condition_name}=({condition_v.name});\n\n'
+            cached_condition_index = condition_v.index
         else:
             self.cached_condition = None
-    
+
     def append(self, c):
         if self.cached_condition:
             self.cached_condition=f'{self.cached_condition}&&({c})'
@@ -360,7 +368,6 @@ class string_cached_stack:
         global cached_condition_name
         global cached_condition_index
         global new_content
-        cached_condition_name ='cached_condition_for_this'
         tokens = MatlabLexer().tokenize(self.cached_condition)
         condition_v = Variable([to for to in tokens]).start_parsing()
         print(f'{cached_condition_name}=({condition_v.name});')
@@ -395,18 +402,17 @@ def extract_expression(exp):
     matchs = re.findall(r'.+=.+;', exp.replace(" ",""), re.MULTILINE)
     return matchs[0][:-1]
 
-def add_condition(expression, condition_stack):
+def add_condition(expression):
+    global cached_condition_name
     if condition_stack.stack:
         
-        condition=condition_stack.cached_condition 
-
         a =  re.search(r'[^=<>]=[^=<>]',expression)
         if a : #matlab
             lhs,rhs = expression[:a.start()+1], expression[a.end()-1:]
-            conditinal_expression =f'{lhs}=({condition})*({rhs}) + (1-({condition}))*{lhs}'
+            conditinal_expression =f'{lhs}=({cached_condition_name})*({rhs}) + (1-({cached_condition_name}))*{lhs}'
         else: #cvx 
             op, lhs, rhs  = lhs_rhs_for_cvx(expression)
-            conditinal_expression =f'0{op}(-({lhs})+({rhs}))*({condition})'
+            conditinal_expression =f'0{op}(-({lhs})+({rhs}))*({cached_condition_name})'
 
         return conditinal_expression
     else:
@@ -414,8 +420,8 @@ def add_condition(expression, condition_stack):
         return expression
 
 
-def vectorize_expression(exp,condition_stack):
-    tokens = MatlabLexer().tokenize(add_condition(exp,condition_stack))
+def vectorize_expression(exp):
+    tokens = MatlabLexer().tokenize(add_condition(exp))
     parser_result= Variable([to for to in tokens]).start_parsing()
     print(parser_result, end="")
     print(';')
@@ -446,7 +452,8 @@ loop_bounds = extract_loop_bounds(input_string)
 
 
 line_list=input_string.splitlines()
-cached_condition_name=None
+cached_condition_name ='cached_condition_for_this'
+
 cached_condition_index=None
 
 keyword_stack=[]
@@ -468,7 +475,7 @@ for exp in line_list:
         if keyword_stack.pop()=='if':
             condition_stack.pop()
     else:
-        vectorize_expression(extract_expression(exp), condition_stack)
+        vectorize_expression(extract_expression(exp))
         
 print("\n---------Those results have been writen to the file \"loop_editor.m\", please refresh it.---------")
 new_content+="%-----Please clear this file each time before you write a new loop on------"
