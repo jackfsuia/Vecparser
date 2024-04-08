@@ -167,7 +167,7 @@ def extract_loop_bounds(input_string):
 
 def extract_expressions(input_block):
     result=[]
-    for line in input_block[1:]:
+    for line in input_block:
         matchs = re.findall(r'.+=.+;', line.replace(" ",""), re.MULTILINE)
         result.append(matchs[0][:-1])
     return result
@@ -390,8 +390,10 @@ def vectorize_one_block(input_block):
         new_content+=f'{cached_condition_name}=({condition_v.name});\n\n'
         cached_condition_index = condition_v.index
 
-
-    expressions = extract_expressions(input_block)
+    if condition:
+        expressions = extract_expressions(input_block[1:])
+    else:
+        expressions = extract_expressions(input_block)
 
     for expression in expressions:
         conditional_expression=None
