@@ -93,38 +93,22 @@ q=permute(permute((cached_condition_for_this),[4,1,2,3]).*permute((repmat(-h,1,1
 
 另外，当迭代次数过大的时候，向量化for循环会因为内存不足而导致电脑死机吗，在这些情况下向量化跑的反而没有原始循环那么快。或许内存不足的时候得在向量化和for循环之间做权衡，或许当考虑用GPU来计算的时候整个情况又会更微妙。
 ## 注意事项
-**这是个实验性的项目，现阶段有很多bug。 现在仅支持单个 if 块或者单个非if块**（*分支[multi_if](https://github.com/jackfsuia/Vecparser/tree/multi_if)可能已经支持多个if块，但还没充分测试*）。 例如，下面的例子有一个if 块加上一个非if 块，是不支持的:
+这是个实验性的项目，现阶段有很多bug。**暂时不支持嵌套if**。 例如，下面的例子有一个双层嵌套if，是不支持的:
 ```matlab
 for n1=1:N1
     for n2=1:N2
+    p(n2)>=-h(n2,n1)*q(n1,n2);
         for n3=1:N3
             for n4=1:N4
 
-                % if块起始
-                if n1~=n2*n3 && n3>n4^3
-                    x(n1,n2,n3,n4)= (y(n1,n3)+z(n4))*h(n2,n3,n1);
+                % 嵌套的双层if
+                if n1>N2/2
+                    if n1~=n2*n3 && n3>n4^3
+                        x(n1,n2,n3,n4)= (y(n1,n3)+z(n4))*h(n2,n3,n1);
+                    end
                 end
-                % if块结束
 
-                % 非if块起始
-                q(n4,n3,n2,n1)= -h(n2,n3,n1)+((y(n1,n3)+z(n4))*h(n2,n3,n1))^2; % 注意: size(z) 必须是 "N4 1", 而不是 "1 N4"。
-                 % 非if块结束
-            end
-        end
-    end
-end
-```
-但下面的只有一个非if块的循环是支持的:
-
-```matlab
-for n1=1:N1
-    for n2=1:N2
-        for n3=1:N3
-            for n4=1:N4
-                % 非if块起始
-                x(n1,n2,n3,n4)= (y(n1,n3)+z(n4))*h(n2,n3,n1);
-                q(n4,n3,n2,n1)= -h(n2,n3,n1)+((y(n1,n3)+z(n4))*h(n2,n3,n1))^2; % 注意: size(z) 必须是 "N4 1", 而不是 "1 N4"。
-                % 非if块结束
+                q(n4,n3,n2,n1)= -h(n2,n3,n1)+((y(n1,n3)+z(n4))*h(n2,n3,n1))^2; % note: size(z) has to be "N4 1", not "1 N4".
             end
         end
     end
