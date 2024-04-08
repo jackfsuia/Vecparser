@@ -131,7 +131,7 @@ for n1=1:N1
 end
 ```
 ## Future Work
-- Support multiple blocks of if-else in one loop. This may be soon and test on branch [multi_if](https://github.com/jackfsuia/Vecparser/tree/multi_if) has been going on. You can gitve it a try.
+- Support multiple blocks of if-else in one loop. This may be soon and test on branch [multi_if](https://github.com/jackfsuia/Vecparser/tree/multi_if) has been going on. You can give it a try now.
 - Support reduce operators like `sum`, `norm`, `*`(matrix multiplication).
 - Explore its use on other languages (e.g., python)
   
