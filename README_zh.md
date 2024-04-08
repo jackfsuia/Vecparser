@@ -6,7 +6,7 @@
 <div align="center">
     
 [![GitHub Code License](https://img.shields.io/github/license/jackfsuia/Vecparser)](LICENSE)
-![GitHub Release](https://img.shields.io/github/v/release/jackfsuia/Vecparser?include_prereleases&display_name=release&logo=github&label=pre-release)
+![GitHub Release](https://img.shields.io/github/v/release/jackfsuia/Vecparser?display_name=release)
 
 [English](README.md) | 简体中文
 
