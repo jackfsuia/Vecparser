@@ -1,4 +1,5 @@
 
+%example
 for n1=1:N1
     for n2=1:N2
         for n3=1:N3
@@ -19,4 +20,3 @@ for n1=1:N1
         end
     end
 end
-
