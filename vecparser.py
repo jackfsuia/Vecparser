@@ -339,17 +339,165 @@ def lhs_rhs_for_cvx(expression):
 
     return expression[start:start+2], expression[:start], expression[start+2:]
             
-def add_condition(expression, condition):
+# def add_condition(expression, condition):
 
-    a =  re.search(r'[^=<>]=[^=<>]',expression)
-    if a : #matlab
-        lhs,rhs = expression[:a.start()+1], expression[a.end()-1:]
-        conditinal_expression =f'{lhs}=({condition})*({rhs}) + (1-({condition}))*{lhs}'
-    else: #cvx to be done...
-        op, lhs, rhs  = lhs_rhs_for_cvx(expression)
-        conditinal_expression =f'0{op}(-({lhs})+({rhs}))*({condition})'
+#     a =  re.search(r'[^=<>]=[^=<>]',expression)
+#     if a : #matlab
+#         lhs,rhs = expression[:a.start()+1], expression[a.end()-1:]
+#         conditinal_expression =f'{lhs}=({condition})*({rhs}) + (1-({condition}))*{lhs}'
+#     else: #cvx to be done...
+#         op, lhs, rhs  = lhs_rhs_for_cvx(expression)
+#         conditinal_expression =f'0{op}(-({lhs})+({rhs}))*({condition})'
 
-    return conditinal_expression
+#     return conditinal_expression
+
+# input_string=""
+
+# with open('loop_editor.m', 'r') as file:
+#     content = file.read()
+    
+#     pattern = r'for .*\nend'
+#     match = re.search(pattern, content, re.DOTALL)
+
+#     if match:
+#         input_string = match.group(0)
+#         print('\n---------------------------The extracted original for-loop is:----------------------------------')
+#         print(input_string)
+#     else:
+#         raise Exception("No for-loop found.")    
+
+# print("-----------------------------vectorized by Vecparser as----------------------------------------\n")
+# new_content="\n\n%-------------------------vectorized by Vecparser as-----------------------\n\n"
+
+
+# loop_bounds = extract_loop_bounds(input_string)
+
+
+# line_list=input_string.splitlines()
+
+# def vectorize_one_block(input_block):
+#     global cached_condition_name
+#     global cached_condition_index
+#     global new_content
+#     cached_condition_name=None
+
+#     condition=extract_condition(input_block)
+#     if condition:
+#         cached_condition_name='cached_condition_for_this'
+#         tokens = MatlabLexer().tokenize(condition)
+#         condition_v = Variable([to for to in tokens]).start_parsing()
+#         print(f'{cached_condition_name}=({condition_v.name});')
+#         new_content+=f'{cached_condition_name}=({condition_v.name});\n\n'
+#         cached_condition_index = condition_v.index
+
+#     if condition:
+#         expressions = extract_expressions(input_block[1:])
+#     else:
+#         expressions = extract_expressions(input_block)
+
+#     for expression in expressions:
+#         conditional_expression=None
+#         if condition:
+#             conditional_expression = add_condition(expression, cached_condition_name)
+#         else:
+#             conditional_expression = expression
+#         tokens = MatlabLexer().tokenize(conditional_expression)
+#         parser_result= Variable([to for to in tokens]).start_parsing()
+#         print(parser_result, end="")
+#         print(';')
+#         new_content+=f'{parser_result.name};\n\n'
+
+# def clear_line_stack(line_stack):
+#     while line_stack:
+#         if len(line_stack) == 1:
+#             return line_stack.pop()
+#         line_stack.pop()
+#     return None
+
+# line_stack=[]
+
+class string_cached_stack:
+    def __init__(self):
+        self.stack=[]
+        self.cached_condition = None
+    def pop(self):
+        self.stack.pop()
+        if self.stack:
+            self.cached_condition=self.cached_condition[:self.stack[-1]]
+        else:
+            self.cached_condition = None
+    
+    def append(self, c):
+        if self.cached_condition:
+            self.cached_condition=f'{self.cached_condition}&&({c})'
+        else:
+            self.cached_condition=f'({c})'
+        self.stack.append(len(self.cached_condition))
+        global cached_condition_name
+        global cached_condition_index
+        global new_content
+        cached_condition_name ='cached_condition_for_this'
+        tokens = MatlabLexer().tokenize(self.cached_condition)
+        condition_v = Variable([to for to in tokens]).start_parsing()
+        print(f'{cached_condition_name}=({condition_v.name});')
+        new_content+=f'{cached_condition_name}=({condition_v.name});\n\n'
+        cached_condition_index = condition_v.index
+
+
+def iscondition(exp):
+
+    if re.search(r'[^\w]*if ', exp)!=None:
+        return True
+    return False
+
+def extract_condition(line):
+    match = re.search(r'[^\w]*if ',line)
+    return line[match.end():] 
+
+
+def isfor(exp):
+
+    if re.search(r'[^\w]*for ', exp)!=None:
+        return True
+    return False
+
+def isend(exp):
+
+    if re.search(r'[^\w]*end[^\w]*', exp)!=None:
+        return True
+    return False   
+
+def extract_expression(exp):
+    matchs = re.findall(r'.+=.+;', exp.replace(" ",""), re.MULTILINE)
+    return matchs[0][:-1]
+
+def add_condition(expression, condition_stack):
+    if condition_stack.stack:
+        
+        condition=condition_stack.cached_condition 
+
+        a =  re.search(r'[^=<>]=[^=<>]',expression)
+        if a : #matlab
+            lhs,rhs = expression[:a.start()+1], expression[a.end()-1:]
+            conditinal_expression =f'{lhs}=({condition})*({rhs}) + (1-({condition}))*{lhs}'
+        else: #cvx 
+            op, lhs, rhs  = lhs_rhs_for_cvx(expression)
+            conditinal_expression =f'0{op}(-({lhs})+({rhs}))*({condition})'
+
+        return conditinal_expression
+    else:
+
+        return expression
+
+
+def vectorize_expression(exp,condition_stack):
+    tokens = MatlabLexer().tokenize(add_condition(exp,condition_stack))
+    parser_result= Variable([to for to in tokens]).start_parsing()
+    print(parser_result, end="")
+    print(';')
+    global new_content
+    new_content+=f'{parser_result.name};\n\n'
+
 
 input_string=""
 
@@ -374,67 +522,30 @@ loop_bounds = extract_loop_bounds(input_string)
 
 
 line_list=input_string.splitlines()
-
-def vectorize_one_block(input_block):
-    global cached_condition_name
-    global cached_condition_index
-    global new_content
-    cached_condition_name=None
-
-    condition=extract_condition(input_block)
-    if condition:
-        cached_condition_name='cached_condition_for_this'
-        tokens = MatlabLexer().tokenize(condition)
-        condition_v = Variable([to for to in tokens]).start_parsing()
-        print(f'{cached_condition_name}=({condition_v.name});')
-        new_content+=f'{cached_condition_name}=({condition_v.name});\n\n'
-        cached_condition_index = condition_v.index
-
-    if condition:
-        expressions = extract_expressions(input_block[1:])
-    else:
-        expressions = extract_expressions(input_block)
-
-    for expression in expressions:
-        conditional_expression=None
-        if condition:
-            conditional_expression = add_condition(expression, cached_condition_name)
-        else:
-            conditional_expression = expression
-        tokens = MatlabLexer().tokenize(conditional_expression)
-        parser_result= Variable([to for to in tokens]).start_parsing()
-        print(parser_result, end="")
-        print(';')
-        new_content+=f'{parser_result.name};\n\n'
-
-def clear_line_stack(line_stack):
-    while line_stack:
-        if len(line_stack) == 1:
-            return line_stack.pop()
-        line_stack.pop()
-    return None
-
-line_stack=[]
 cached_condition_name=None
 cached_condition_index=None
 
-for i,line in enumerate(line_list):
-    if ';' in line:
-        line_stack.append(i)
-    elif re.search(r'[^\w]*if ',line):
-        if line_stack:
-            bottom= clear_line_stack(line_stack)
-            if bottom:
-                vectorize_one_block(line_list[bottom:i])
-        line_stack.append(i)
-    elif re.search(r'[^\w]*end[^\w]*',line):
-        if line_stack:
-            bottom = clear_line_stack(line_stack)
-            if bottom:
-                vectorize_one_block(line_list[bottom:i])
+keyword_stack=[]
+condition_stack =string_cached_stack()
 
+for exp in line_list:
+    
+    if iscondition(exp):
 
+        condition_stack.append(extract_condition(exp))
+        keyword_stack.append('if')
 
+    elif isfor(exp):
+        keyword_stack.append('for')
+    
+
+    elif isend(exp):
+        
+        if keyword_stack.pop()=='if':
+            condition_stack.pop()
+    else:
+        vectorize_expression(extract_expression(exp), condition_stack)
+        
 print("\n---------Those results have been writen to the file \"loop_editor.m\", please refresh it.---------")
 new_content+="%-----Please clear this file each time before you write a new loop on------"
 with open('loop_editor.m', "a") as target_file:
