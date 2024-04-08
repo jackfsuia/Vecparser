@@ -8,7 +8,7 @@
 English | [简体中文](README_zh.md)
 </div>
 <!-- # Vecparser -->
-A parser that auto vectorizes your nested for-loops (in MATLAB, CVX) as much as possible, which is to save tons of run time. This technique is based on my original post at https://ask.cvxr.com/t/how-to-vectorize-most-constraint-loops-in-cvx/9804 in 2022.
+A parser that auto vectorizes your nested for-loops (in MATLAB, CVX) as much as possible, which is to save tons of run time (97% in some cases). This technique is based on my original post at https://ask.cvxr.com/t/how-to-vectorize-most-constraint-loops-in-cvx/9804 in 2022.
 
 ## Table of Contents
 
@@ -93,7 +93,7 @@ I ran this performance test on my old computer: Intel(R) Xeon(R) CPU E5-2660 v2 
 I also observed that when the loop of iterations is too big, vectorization of it will cause my computer to crash due to memory shortage, therefore it ran slower than traditional loops in those extreme cases. It will be meaningful to see the trade off provided limited RAM, and how it'll perform when GPU come into play.
 
 ## Notice
-**It might work or not work, it is still a experimental project. For now it only support one if-block or one non if-block in the loop** (*well, the branch [multi_if](https://github.com/jackfsuia/Vecparser/tree/multi_if) might have 'support' multi-blocks , but has not been tested enough*). For example, the loop like the following, which has one if-block and one non if-block won't work:
+**It might work or not work, it is still a experimental project. For now it only support one if-block or one non if-block in the loop** (*well, the branch [multi_if](https://github.com/jackfsuia/Vecparser/tree/multi_if) might support multi-blocks , test is being done*). For example, the loop like the following, which has one if-block and one non if-block won't work:
 ```matlab
 for n1=1:N1
     for n2=1:N2
