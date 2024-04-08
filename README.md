@@ -93,45 +93,29 @@ I ran this performance test on my old computer: Intel(R) Xeon(R) CPU E5-2660 v2 
 I also observed that when the loop of iterations is too big, vectorization of it will cause my computer to crash due to memory shortage, therefore it ran slower than traditional loops in those extreme cases. It will be meaningful to see the trade off provided limited RAM, and how it'll perform when GPU come into play.
 
 ## Notice
-**It might work or not work, it is still a experimental project. For now it only support one if-block or one non if-block in the loop** (*well, the branch [multi_if](https://github.com/jackfsuia/Vecparser/tree/multi_if) pre-support multi-blocks, test is still being done*). For example, the loop like the following, which has one if-block and one non if-block won't work:
+**It might work or not work, it is still a experimental project. For now does not support the nested ifs. For example, the loop like the following, which has two ifs but in a nested way, won't work:
 ```matlab
 for n1=1:N1
     for n2=1:N2
+    p(n2)>=-h(n2,n1)*q(n1,n2);
         for n3=1:N3
             for n4=1:N4
 
-                % if block start
-                if n1~=n2*n3 && n3>n4^3
-                    x(n1,n2,n3,n4)= (y(n1,n3)+z(n4))*h(n2,n3,n1);
+                % nested ifs (multiple layers of ifs)
+                if n1>N2/2
+                    if n1~=n2*n3 && n3>n4^3
+                        x(n1,n2,n3,n4)= (y(n1,n3)+z(n4))*h(n2,n3,n1);
+                    end
                 end
-                % if block end
 
-                % non if block start
                 q(n4,n3,n2,n1)= -h(n2,n3,n1)+((y(n1,n3)+z(n4))*h(n2,n3,n1))^2; % note: size(z) has to be "N4 1", not "1 N4".
-                 % non if block end
-            end
-        end
-    end
-end
-```
-but, this loop below that has one non if-block can work:
-
-```matlab
-for n1=1:N1
-    for n2=1:N2
-        for n3=1:N3
-            for n4=1:N4
-                % non if block start
-                x(n1,n2,n3,n4)= (y(n1,n3)+z(n4))*h(n2,n3,n1);
-                q(n4,n3,n2,n1)= -h(n2,n3,n1)+((y(n1,n3)+z(n4))*h(n2,n3,n1))^2; % note: size(z) has to be "N4 1", not "1 N4".
-                % non if block end
             end
         end
     end
 end
 ```
 ## Future Work
-- Support multiple blocks of if-else in one loop. This may be soon and test on branch [multi_if](https://github.com/jackfsuia/Vecparser/tree/multi_if) has been going on. You can give it a try now.
+- Support nested ifs. This can be soon.
 - Support reduce operators like `sum`, `norm`, `*`(matrix multiplication).
 - Explore its use on other languages (e.g., python)
   
