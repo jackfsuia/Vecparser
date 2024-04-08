@@ -115,7 +115,7 @@ for n1=1:N1
 end
 ```
 ## 未来工作
-- 支持多个if块和非if块。这个应该很快。分支[multi_if](https://github.com/jackfsuia/Vecparser/tree/multi_if) 正在测试中，欢迎先体验。
+- 支持嵌套if块。这个应该很快。
 - 支持降维式运算符，比如 `sum`, `norm`, `*`(矩阵乘)。
 - 推广到其他语言 (e.g., python)。
   
