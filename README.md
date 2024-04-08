@@ -94,29 +94,9 @@ I ran this performance test on my old computer: Intel(R) Xeon(R) CPU E5-2660 v2 
 I also observed that when the loop of iterations is too big, vectorization of it will cause my computer to crash due to memory shortage, therefore it ran slower than traditional loops in those extreme cases. It will be meaningful to see the trade off provided limited RAM, and how it'll perform when GPU come into play.
 
 ## Notice
-**It might have bugs, being a experimental project. For now it does not support the nested ifs.** For example, the loop like the following, which has two ifs but in a nested way, won't work:
-```matlab
-for n1=1:N1
-    for n2=1:N2
-    p(n2)>=-h(n2,n1)*q(n1,n2);
-        for n3=1:N3
-            for n4=1:N4
+**It might have bugs, for being a experimental project.** 
 
-                % nested ifs (multiple layers of ifs)
-                if n1>N2/2
-                    if n1~=n2*n3 && n3>n4^3
-                        x(n1,n2,n3,n4)= (y(n1,n3)+z(n4))*h(n2,n3,n1);
-                    end
-                end
-
-                q(n4,n3,n2,n1)= -h(n2,n3,n1)+((y(n1,n3)+z(n4))*h(n2,n3,n1))^2; % note: size(z) has to be "N4 1", not "1 N4".
-            end
-        end
-    end
-end
-```
 ## Future Work
-- Support nested ifs. This can be soon.
 - Support reduce operators like `sum`, `norm`, `*`(matrix multiplication).
 - Explore its use on other languages (e.g., python)
   
