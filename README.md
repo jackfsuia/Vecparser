@@ -94,7 +94,7 @@ I ran this performance test on my old computer: Intel(R) Xeon(R) CPU E5-2660 v2 
 I also observed that when the loop of iterations is too big, vectorization of it will cause my computer to crash due to memory shortage, therefore it ran slower than traditional loops in those extreme cases. It will be meaningful to see the trade off provided limited RAM, and how it'll perform when GPU come into play.
 
 ## Notice
-Now it supports nested if blocks and multiple if and non-if blocks anywhere in loop. Support CVX style convex inequality like '>=','<=','=='. **It might have bugs, for being a experimental project.**
+Now it supports nested if blocks and multiple if and non-if blocks anywhere in loop. Support all the native vectorized operators: +, -, *, /, and so on. Support self-defined vectorized dimension-invariant function without modifications to code. Support CVX style convex inequality like '>=','<=','=='. **It might have bugs, for being a experimental project.**
 
 ## Future Work
 - Support reduce operators like `sum`, `norm`, `*`(matrix multiplication).
