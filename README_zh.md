@@ -32,11 +32,11 @@ git clone https://github.com/jackfsuia/Vecparser.git
 ```bash
 pip install sly
 ```
-要向量化你的 MATLAB 和 CVX 中的 for 循环，请先将循环写到 [loop_eiditor.m](loop_eiditor.m)，在此之前建议读一下[注意事项](#注意事项))。 然后运行
+要向量化你的 MATLAB 和 CVX 中的 for 循环，请先将循环写到 [loop_eiditor.m](loop_editor.m)，在此之前建议读一下[注意事项](#注意事项))。 然后运行
 ```bash
 python vecparser.py
 ```
-大功告成! 向量化后的表达式也会打印在 [loop_eiditor.m](loop_eiditor.m) , 所以请刷新一下这个文件。
+大功告成! 向量化后的表达式也会打印在 [loop_eiditor.m](loop_editor.m) , 所以请刷新一下这个文件。
 
 ## 示例
 比如下面的原始循环，先把它抄到[loop_eiditor.m](loop_eiditor.m)如下:
