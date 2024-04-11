@@ -34,10 +34,10 @@ To vectorize your for-loops from Matlab and CVX, write your loop (please first r
 ```bash
 python vecparser.py
 ```
-That's all! The results will be printed in [loop_eiditor.m](loop_eiditor.m) too, please refresh it.
+That's all! The results will be printed in [loop_eiditor.m](loop_editor.m) too, please refresh it.
 
 ## Example
-To vectorize the Matlab loops, copy the loops you want to vectorize to [loop_eiditor.m](loop_eiditor.m), like this one:
+To vectorize the Matlab loops, copy the loops you want to vectorize to [loop_eiditor.m](loop_editor.m), like this one:
 ```matlab
 % loop_eiditor.m
 for n1=1:N1
