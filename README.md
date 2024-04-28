@@ -42,11 +42,14 @@ To vectorize the Matlab loops, copy the loops you want to vectorize to [loop_eid
 % loop_eiditor.m
 for n1=1:N1
     for n2=1:N2
-        for n3=1:N3
-            for n4=1:N4
-                if n1~=n2*n3 && n3>n4^3
-                    x(n1,n2,n3,n4)= (y(n1,n3)+z(n4))*h(n2,n3,n1); % note: size(z) has to be "N4 1", not "1 N4".
-                    q(n4,n3,n2,n1)= -h(n2,n3,n1)+((y(n1,n3)+z(n4))*h(n2,n3,n1))^2;
+    x(n1,n2)= -(y(n1)+z(n2))*m(n2,n1);
+        if n1>n2*2
+            for n3=1:N3
+                for n4=1:N4
+                    if n1~=n2*n3 && n3>n4^3
+                        q(n4,n3,n2,n1)= -h(n2,n3,n1)+((n(n1,n3)+w(n4))*t(n2,n3,n1))^2;
+                    end
+                    u(n1,n2,n3,n4)= (p(n1,n3)+a(n4))*b(n2,n3,n1);
                 end
             end
         end
@@ -62,11 +65,14 @@ The result will be appended to [loop_eiditor.m](loop_eiditor.m) as
 % loop_eiditor.m
 for n1=1:N1
     for n2=1:N2
-        for n3=1:N3
-            for n4=1:N4
-                if n1~=n2*n3 && n3>n4^3
-                    x(n1,n2,n3,n4)= (y(n1,n3)+z(n4))*h(n2,n3,n1); % note: size(z) has to be "N4 1", not "1 N4".
-                    q(n4,n3,n2,n1)= -h(n2,n3,n1)+((y(n1,n3)+z(n4))*h(n2,n3,n1))^2;
+    x(n1,n2)= -(y(n1)+z(n2))*m(n2,n1);
+        if n1>n2*2
+            for n3=1:N3
+                for n4=1:N4
+                    if n1~=n2*n3 && n3>n4^3
+                        q(n4,n3,n2,n1)= -h(n2,n3,n1)+((n(n1,n3)+w(n4))*t(n2,n3,n1))^2;
+                    end
+                    u(n1,n2,n3,n4)= (p(n1,n3)+a(n4))*b(n2,n3,n1);
                 end
             end
         end
@@ -75,11 +81,17 @@ end
 
 %-------------------------vectorized by Vecparser as-----------------------
 
-cached_condition_for_this=(permute(repmat(repmat((1:N1)',1,N2,N3)~=permute(repmat(repmat((1:N2)',1,N3).*permute(repmat((1:N3)',1,N2),[2,1]),1,1,N1),[3,1,2]),1,1,1,N4),[2,3,1,4])&permute(repmat(permute(repmat((1:N3)',1,N4),[2,1])>repmat((1:N4)'.^3,1,N3),1,1,N2,N1),[3,2,4,1]));
+x=-(repmat(y,1,N2)+permute(repmat(z,1,N1),[2,1])).*permute(m,[2,1]);
 
-x=permute(permute((cached_condition_for_this),[4,1,2,3]).*permute((permute(repmat((permute(repmat(y,1,1,N4),[1,3,2])+permute(repmat(z,1,N1,N3),[2,1,3])),1,1,1,N2),[4,3,1,2]).*repmat(h,1,1,1,N4)),[4,1,2,3])+permute((1-permute((cached_condition_for_this),[3,4,1,2])),[2,3,4,1]).*permute(x,[4,2,3,1]),[4,2,3,1]);
+cached_condition_for_this=((repmat((1:N1)',1,N2)>permute(repmat((1:N2)'.*2,1,N1),[2,1])));
 
-q=permute(permute((cached_condition_for_this),[4,1,2,3]).*permute((repmat(-h,1,1,1,N4)+permute(permute((permute(repmat((permute(repmat(y,1,1,N4),[1,3,2])+permute(repmat(z,1,N1,N3),[2,1,3])),1,1,1,N2),[4,3,1,2]).*repmat(h,1,1,1,N4)),[3,4,1,2]).^2,[3,4,1,2])),[4,1,2,3])+permute((1-permute((cached_condition_for_this),[3,4,1,2])),[2,3,4,1]).*permute(q,[1,3,2,4]),[1,3,2,4]);
+cached_condition_for_this=(repmat((repmat((1:N1)',1,N2)>permute(repmat((1:N2)'.*2,1,N1),[2,1])),1,1,N3,N4)&permute((permute(repmat(repmat((1:N1)',1,N3,N2)~=permute(repmat(permute(repmat((1:N2)',1,N3),[2,1]).*repmat((1:N3)',1,N2),1,1,N1),[3,1,2]),1,1,1,N4),[1,4,3,2])&permute(repmat(repmat((1:N3)',1,N4)>permute(repmat((1:N4)'.^3,1,N3),[2,1]),1,1,N1,N2),[3,2,4,1])),[1,3,4,2]));
+
+q=permute(permute(permute((cached_condition_for_this),[1,4,2,3]).*(permute(repmat(-h,1,1,1,N4),[3,4,1,2])+(permute(repmat((repmat(n,1,1,N4)+permute(repmat(w,1,N1,N3),[2,3,1])),1,1,1,N2),[1,3,4,2]).*permute(repmat(t,1,1,1,N4),[3,4,1,2])).^2),[1,3,4,2])+permute(permute((1-permute((cached_condition_for_this),[1,3,4,2])),[1,3,4,2]).*permute(q,[4,1,3,2]),[1,3,4,2]),[4,3,2,1]);
+
+cached_condition_for_this=((repmat((1:N1)',1,N2)>permute(repmat((1:N2)'.*2,1,N1),[2,1])));
+
+u=permute(permute(repmat((cached_condition_for_this),1,1,N3,N4).*permute((permute(repmat((repmat(p,1,1,N4)+permute(repmat(a,1,N1,N3),[2,3,1])),1,1,1,N2),[1,3,4,2]).*permute(repmat(b,1,1,1,N4),[3,4,1,2])),[1,3,4,2]),[1,4,2,3])+permute((1-permute((cached_condition_for_this),[1,3,4,2])),[1,3,4,2]).*permute(u,[1,4,2,3]),[1,3,4,2]);
 
 %-----Please clear this file each time before you write a new loop on------
 ```
