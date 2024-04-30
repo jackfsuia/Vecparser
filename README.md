@@ -42,7 +42,7 @@ To vectorize the Matlab loops, copy the loops you want to vectorize to [loop_eid
 % loop_eiditor.m
 for n1=1:N1
     for n2=1:N2
-    x(n1,n2)= -(y(n1)+z(n2))*m(n2,n1);
+        x(n1,n2)= -(y(n1)+z(n2))*m(n2,n1);
         if n1>n2*2
             for n3=1:N3
                 for n4=1:N4
