@@ -24,7 +24,7 @@ A parser that auto vectorizes your nested for-loops (in MATLAB, CVX) as much as 
 ## Quick Start
 Run
 ```bash
-git clone https://github.com/jackfsuia/Vecparser.git
+git clone https://github.com/jackfsuia/Vecparser.git && cd Vecparser
 ```
 Then install the requirements, run
 ```bash
