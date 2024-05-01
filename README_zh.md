@@ -26,7 +26,7 @@ Vecparser 是一个自动将任意层 for 循环（在 MATLAB、CVX 中）尽可
 ## 快速启动
 先克隆仓库
 ```bash
-git clone https://github.com/jackfsuia/Vecparser.git
+git clone https://github.com/jackfsuia/Vecparser.git && cd Vecparser
 ```
 然后运行下面命令安装依赖项，
 ```bash
