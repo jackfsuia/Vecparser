@@ -15,8 +15,11 @@
 Vecparser 是一个自动将任意层 for 循环（在 MATLAB、CVX 中）尽可能向量化的解析器，由此节省大量（有时97%）的程序运行时间。这项技术基于我2022年发在https://ask.cvxr.com/t/how-to-vectorize-most-constraint-loops-in-cvx/9804 的原创帖子。
 ## Table of Contents
 
+- [Table of Contents](#table-of-contents)
 - [快速启动](#快速启动)
 - [示例](#示例)
+  - [Matlab 示例](#matlab-示例)
+  - [CVX 示例](#cvx-示例)
 - [性能表现](#性能表现)
 - [注意事项](#注意事项)
 - [未来工作](#未来工作)
@@ -39,6 +42,7 @@ python vecparser.py
 大功告成! 向量化后的表达式也会打印在 [loop_eiditor.m](loop_editor.m) , 所以请刷新一下这个文件。
 
 ## 示例
+### Matlab 示例
 比如下面的原始循环，先把它抄到[loop_eiditor.m](loop_eiditor.m)如下:
 ```matlab
 % loop_eiditor.m
@@ -98,8 +102,27 @@ u=permute(permute(repmat((cached_condition_for_this),1,1,N3,N4).*permute((permut
 %-----Please clear this file each time before you write a new loop on------
 ```
 现在将结果复制到你的 matlab 中去替换原始的循环，试着运行一下。
+### CVX 示例
+和Matlab运行方式一模一样，只不过输出会自动把每一项全部移到不等式右侧，以提高效率。所以你得到的结果类似下面：
+```matlab
+for n1=1:N1
+    for n2=1:N2
+        for n3=1:N3
+            if n1~=n2*n3 && n3>n2^3
+                x(n1) >= y(n2) + z(n2, n3);
+            end
+        end
+    end
+end
 
- *觉得有用的话，请帮我们点颗星 :star: ，谢谢~~*
+%-------------------------vectorized by Vecparser as-----------------------
+
+cached_condition_for_this=((permute(repmat((1:N1)',1,N2,N3)~=permute(repmat(repmat((1:N2)',1,N3).*permute(repmat((1:N3)',1,N2),[2,1]),1,1,N1),[3,1,2]),[3,1,2])&permute(repmat(permute(repmat((1:N3)',1,N2),[2,1])>repmat((1:N2)'.^3,1,N3),1,1,N1),[2,3,1])));
+
+0>=permute(permute((repmat(-(x),1,N2,N3)+permute(repmat((repmat(y,1,N3)+z),1,1,N1),[3,1,2])),[3,1,2]).*(cached_condition_for_this),[3,2,1]);
+
+%-----Please clear this file each time before you write a new loop on------
+```
  ## 性能表现
 我在老电脑上跑了仿真，电脑配置是: Intel(R) Xeon(R) CPU E5-2660 v2 @ 2.20GHz, RAM 16G. 结果如下:
 ![performance](images/loop.png)

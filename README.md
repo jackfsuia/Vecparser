@@ -13,8 +13,11 @@ A parser that auto vectorizes your nested for-loops (in MATLAB, CVX) as much as 
 
 ## Table of Contents
 
+- [Table of Contents](#table-of-contents)
 - [Quick Start](#quick-start)
 - [Example](#example)
+  - [a Matlab example](#a-matlab-example)
+  - [a CVX example](#a-cvx-example)
 - [Performance](#performance)
 - [Notice](#notice)
 - [Future Work](#future-work)
@@ -37,6 +40,7 @@ python vecparser.py
 That's all! The results will be printed in [loop_eiditor.m](loop_editor.m) too, please refresh it.
 
 ## Example
+### a Matlab example
 To vectorize the Matlab loops, copy the loops you want to vectorize to [loop_eiditor.m](loop_editor.m), like this one:
 ```matlab
 % loop_eiditor.m
@@ -97,8 +101,30 @@ u=permute(permute(repmat((cached_condition_for_this),1,1,N3,N4).*permute((permut
 ```
 Now copy the results to your matlab to replace the loops, and try them out.
 
- *Does this help you save some run time? Give us a :star:*
- 
+### a CVX example
+It goes the same ways as Matlab, except all terms will be automatically moved to right side of inqualities for efficiency. So what you get will be like:
+```matlab
+for n1=1:N1
+    for n2=1:N2
+        for n3=1:N3
+            if n1~=n2*n3 && n3>n2^3
+                x(n1) >= y(n2) + z(n2, n3);
+            end
+        end
+    end
+end
+
+%-------------------------vectorized by Vecparser as-----------------------
+
+cached_condition_for_this=((permute(repmat((1:N1)',1,N2,N3)~=permute(repmat(repmat((1:N2)',1,N3).*permute(repmat((1:N3)',1,N2),[2,1]),1,1,N1),[3,1,2]),[3,1,2])&permute(repmat(permute(repmat((1:N3)',1,N2),[2,1])>repmat((1:N2)'.^3,1,N3),1,1,N1),[2,3,1])));
+
+0>=permute(permute((repmat(-(x),1,N2,N3)+permute(repmat((repmat(y,1,N3)+z),1,1,N1),[3,1,2])),[3,1,2]).*(cached_condition_for_this),[3,2,1]);
+
+%-----Please clear this file each time before you write a new loop on------
+```
+
+
+
 ## Performance
 I ran this performance test on my old computer: Intel(R) Xeon(R) CPU E5-2660 v2 @ 2.20GHz, RAM 16G. Here is what I got:
 ![performance](images/loop.png)
