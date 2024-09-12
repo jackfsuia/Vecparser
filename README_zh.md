@@ -120,9 +120,9 @@ end
 
 %-------------------------vectorized by Vecparser as-----------------------
 
-cached_condition_for_this=((permute(repmat((1:N1)',1,N2,N3)~=permute(repmat(repmat((1:N2)',1,N3).*permute(repmat((1:N3)',1,N2),[2,1]),1,1,N1),[3,1,2]),[3,1,2])&permute(repmat(permute(repmat((1:N3)',1,N2),[2,1])>repmat((1:N2)'.^3,1,N3),1,1,N1),[2,3,1])));
+cached_condition_for_this=((repmat((1:N1)',1,N3,N2)~=permute(repmat(permute(repmat((1:N2)',1,N3),[2,1]).*repmat((1:N3)',1,N2),1,1,N1),[3,1,2])&permute(repmat(repmat((1:N3)',1,N2)>permute(repmat((1:N2)'.^3,1,N3),[2,1]),1,1,N1),[3,1,2])));
 
-0>=permute(permute((repmat(-(x),1,N2,N3)+permute(repmat((repmat(y,1,N3)+z),1,1,N1),[3,1,2])),[3,1,2]).*(cached_condition_for_this),[3,2,1]);
+0>=(repmat(-(x),1,N3,N2)+permute(repmat((permute(repmat(y,1,N3),[2,1])+permute(z,[2,1])),1,1,N1),[3,1,2])).*(cached_condition_for_this);
 
 %-----Please clear this file each time before you write a new loop on------
 ```
