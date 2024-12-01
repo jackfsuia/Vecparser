@@ -1,8 +1,7 @@
 ## loop-killer
 
 English | [简体中文](README_zh.md)
-</div>
-<!-- # Vecparser -->
+
 A parser that auto vectorizes your nested for-loops (in MATLAB, CVX) as much as possible, which is to save tons of run time (97% in some cases). This technique is based on my original post at https://ask.cvxr.com/t/how-to-vectorize-most-constraint-loops-in-cvx/9804 in 2022.
 
 Here is the [performance](#performance):
@@ -149,7 +148,7 @@ If this work is helpful, please kindly cite as:
   title={Vecparser: a parser that vectorizes your nested for-loops (in MATLAB, CVX) as much as possible.}, 
   author={Yannan Luo},
   year={2024},
-  url={https://github.com/jackfsuia/Vecparser}
+  url={https://github.com/jackfsuia/loop-killer}
 }
 ```
 ## Acknowledgement
