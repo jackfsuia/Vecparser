@@ -1,10 +1,4 @@
-<p align="center">
-    <img src="images/logo.PNG" width="45%" >
-</p>
-<div align="center">
-    
-[![GitHub Code License](https://img.shields.io/github/license/jackfsuia/Vecparser)](LICENSE)
-![GitHub Release](https://img.shields.io/github/v/release/jackfsuia/Vecparser?display_name=release)
+## loop-killer
 
 English | [简体中文](README_zh.md)
 </div>
